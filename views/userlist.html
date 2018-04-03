@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>成员列表</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="/css/jumbotron.css" rel="stylesheet">
+    <style>
+      .regist{
+        padding: 48px 0 0 0;
+      }
+      .form-horizontal{
+        width: 50%;
+        margin: 0 auto;
+      }
+      .welcome{
+        text-align: center;
+      }
+      #regist-alert{
+        display: none;
+      }
+      .list-group-item{
+        overflow: hidden;
+      }
+      .list-group-item{
+        float: left;
+      }
+      .avatar{
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        float: left;
+        margin-right: 20px;
+      }
+      .list-group-item-heading{
+        line-height: 50px;
+      }
+    </style>
+  </head>
+
+  <body>
+
+   <% include header.html %>
+    <h1 class="welcome">
+      成员列表
+    </h1>
+    <div class="container regist">
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="list-group">
+          <% for (var i = 0; i < userlist.length; i++) { %>
+          <a href="/user/<%= userlist[i].username%>" class="list-group-item col-lg-4">
+            <img src="/avatar/<%= userlist[i].avatar || 'default.jpg' %>" alt="" class="avatar">
+            <h4 class="list-group-item-heading"><%= userlist[i].username%></h4>
+          </a>
+          <% } %>
+        </div>
+      </div>
+
+      <% include footer.html %>
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script>
+      
+    </script>
+  </body>
+</html>

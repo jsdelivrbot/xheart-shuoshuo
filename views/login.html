@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>登录 - X_Heart说说</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="/css/jumbotron.css" rel="stylesheet">
+    <style>
+      .regist{
+        padding: 48px 0 0 0;
+      }
+      .form-horizontal{
+        width: 50%;
+        margin: 0 auto;
+      }
+      .welcome{
+        text-align: center;
+      }
+      #regist-alert{
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+
+   <% include header.html %>
+    <h1 class="welcome">登 录</h1>
+    <div class="container regist">
+      <!-- Example row of columns -->
+      <div class="row">
+        <form class="form-horizontal">
+          <div class="alert alert-warning alert-dismissible" role="alert" id="regist-alert">
+            <button type="button" class="close regist-alert-close"><span aria-hidden="true">&times;</span></button>
+            <span class="regist-alert-text"></span> 
+          </div>
+          <div class="form-group">
+            <label for="username" class="col-sm-2 control-label">用户名</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="username" name="username" placeholder="用户名，可以是中文，不能和现有的重复">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="password" class="col-sm-2 control-label">密&nbsp;&nbsp;&nbsp;&nbsp;码</label>
+            <div class="col-sm-10">
+              <input type="password" class="form-control" id="password" name="password" placeholder="密码，至少六位">
+            </div>
+          </div>
+          <!--<div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox"> 保存用户名
+                </label>
+              </div>
+            </div>
+          </div>-->
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="button" class="btn btn-default" id="submit">登录</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <% include footer.html %>
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script>
+      $('input').focus(function() {
+        $('#regist-alert').slideUp()
+      })
+      $('.regist-alert-close').click(function() {
+        $('#regist-alert').slideUp()
+      })
+
+      $('#submit').click(function() {
+        $.post('/dulogin', {
+          "username": $('#username').val(),
+          "password": $('#password').val()
+        }, function(result) {
+          if (result.code == 500) {
+            $('.regist-alert-text').html(result.info)
+            $('#regist-alert').slideDown()
+          } else if (result.code == 200) {
+            // alert(result.info + ',将自动跳转到首页')
+            window.location = '/'
+          }
+        })
+      })
+    </script>
+  </body>
+</html>

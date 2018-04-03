@@ -1,0 +1,215 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>更改头像 - X_Heart说说</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="/css/jumbotron.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/jquery.Jcrop.min.css" type="text/css" />
+    <style>
+      .regist{
+        padding: 48px 0 0 0;
+      }
+      .form-horizontal{
+        width: 50%;
+        margin: 0 auto;
+      }
+      .welcome{
+        text-align: center;
+      }
+      .form-control{
+        height: 40px;
+      }
+      .jcrop-holder #preview-pane {
+        display: block;
+        position: absolute;
+        z-index: 2000;
+        top: 10px;
+        right: -280px;
+        padding: 6px;
+        border: 1px rgba(0,0,0,.4) solid;
+        background-color: white;
+
+        -webkit-border-radius: 6px;
+        -moz-border-radius: 6px;
+        border-radius: 6px;
+
+        -webkit-box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.2);
+        -moz-box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.2);
+        box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.2);
+      }
+      #target{
+        width: 500px;
+        height: auto;
+      }
+      /* The Javascript code will set the aspect ratio of the crop
+        area based on the size of the thumbnail preview,
+        specified here */
+      #preview-pane .preview-container {
+        width: 250px;
+        height: 250px;
+        overflow: hidden;
+      }
+      .position{
+        position: absolute;
+        bottom: -50px;
+        width: 100%;
+        text-align: center;
+      }
+      .position input{
+        font-size: 16px;
+        padding: 2px 15px;
+      }
+      .jcrop-holder{
+        margin: auto;
+      }
+    </style>
+  </head>
+
+  <body>
+
+   <% include header.html %>
+    <h1 class="welcome">更改头像</h1>
+    <div class="container regist">
+      <!-- Example row of columns -->
+      <div class="row">
+        <form class="form-horizontal" action="/setavatar" enctype="multipart/form-data" method="post">
+          <div class="form-group">
+            <label for="avatar" class="col-sm-2 control-label">上传头像</label>
+            <div class="col-sm-10">
+              <input type="file" class="form-control" id="avatar" name="avatar" placeholder="上传头像">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="submit" class="btn btn-default" id="submit">上传</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <% if (isfile) { %>
+      <div class="row">
+        <img src="/avatar/temp/<%= avatar%>" id="target" alt="[Jcrop Example]" />
+        <div id="preview-pane">
+          <div class="preview-container">
+            <img src="/avatar/temp/<%= avatar%>" class="jcrop-preview" alt="Preview" />
+          </div>
+          <div class="position">
+            <input type="button" name="" value="剪裁" id="btn">
+          </div>
+        </div>
+      </div>
+      <% }  %>
+      <% include footer.html %>
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.Jcrop.js"></script>
+    <script type="text/javascript">
+      jQuery(function($){
+
+        // Create variables (in this scope) to hold the API and image size
+        var jcrop_api,
+            boundx,
+            boundy,
+
+            // Grab some information about the preview pane
+            $preview = $('#preview-pane'),
+            $pcnt = $('#preview-pane .preview-container'),
+            $pimg = $('#preview-pane .preview-container img'),
+
+            xsize = $pcnt.width(),
+            ysize = $pcnt.height();
+        
+        console.log('init',[xsize,ysize]);
+        $('#target').Jcrop({
+          onChange: updatePreview,
+          onSelect: updatePreview,
+          aspectRatio: xsize / ysize
+        },function(){
+          // Use the API to get the real image size
+          var bounds = this.getBounds();
+          boundx = bounds[0];
+          boundy = bounds[1];
+          // Store the API in the jcrop_api variable
+          jcrop_api = this;
+
+          // Move the preview into the jcrop container for css positioning
+          $preview.appendTo(jcrop_api.ui.holder);
+        });
+
+        function updatePreview(c)
+        {
+          if (parseInt(c.w) > 0)
+          {
+            var rx = xsize / c.w;
+            var ry = ysize / c.h;
+
+            // var width = Math.round(rx * boundx);
+            // var height = Math.round(ry * boundy);
+            var positionX = Math.round(rx * c.x);
+            var positionY = Math.round(ry * c.y);
+            $pimg.css({
+              width: Math.round(rx * boundx) + 'px',
+              height: Math.round(ry * boundy) + 'px',
+              marginLeft: '-' + positionX + 'px',
+              marginTop: '-' + positionY + 'px'
+            });
+          }
+        };
+      });
+
+      $('#btn').click(function() {
+          var jcropBox = $('.jcrop-holder>div:first');
+          var w = parseInt(jcropBox.css('width'));
+          var h = parseInt(jcropBox.css('height'));
+          var x = parseInt(jcropBox.css('left'));
+          var y = parseInt(jcropBox.css('top'));
+          console.log('w:'+ w +', h:'+ h +', x:'+ x + ', y:'+ y)
+
+          var canvas=$('<canvas width="'+w+'" height="'+h+'"></canvas>')[0],
+          ctx=canvas.getContext('2d');
+          var image= new Image();
+          image.src= $('#target').attr('src')
+          var width = image.width
+          var height = image.height
+          var imgW = $('#target').width()
+          var imgH = $('#target').height()
+          var scale = width / imgW
+          ctx.drawImage(image,x * scale,y * scale,w * scale,h * scale,0,0,w,h);//重绘
+          // $(document.body).append(canvas);
+          data = canvas.toDataURL();
+          $.post('/docut',{
+            w: w,
+            h: h,
+            x: x,
+            y: y,
+            data: data
+            }, function(result) {
+              if (result.code == 500) {
+                alert(result.info)
+              } else if (result.code == 200) {
+                alert(result.info)
+                window.location = '/'
+              }
+            })
+        })
+    </script>
+  </body>
+</html>
