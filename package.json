@@ -20,6 +20,7 @@
     "formidable": "^1.1.1",
     "gm": "^1.23.0",
     "mongodb": "^2.2.28",
+    "session-file-store": "^1.2.0",
     "silly-datetime": "^0.1.2"
   }
 }
