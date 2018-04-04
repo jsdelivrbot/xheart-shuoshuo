@@ -2,9 +2,10 @@
  * @Author: X_Heart
  * @Date: 2017-06-07 09:09:30
  * @Last Modified by: wangxiaoxin
- * @Last Modified time: 2018-04-03 17:26:58
+ * @Last Modified time: 2018-04-04 09:15:19
  * @description: 路由
  */
+'use strict'
 const formidable = require('formidable')
 const db = require('../models/db')
 const md5 = require('../models/md5')

@@ -2,9 +2,10 @@
  * @Author: X_Heart
  * @Date: 2017-05-28 14:45:29
  * @Last Modified by: wangxiaoxin
- * @Last Modified time: 2018-04-03 15:30:36
+ * @Last Modified time: 2018-04-04 09:16:10
  * @description: 封装了对数据库的常用操作
  */
+'use strict'
 const MongoClient = require('mongodb').MongoClient
 
 const config = require('../config')
