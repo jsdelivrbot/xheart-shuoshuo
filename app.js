@@ -2,7 +2,7 @@
  * @Author: X_Heart
  * @Date: 2017-06-07 09:08:00
  * @Last Modified by: wangxiaoxin
- * @Last Modified time: 2018-04-04 09:25:34
+ * @Last Modified time: 2018-04-04 09:29:26
  * @description: 班级说说
  */
 
@@ -18,7 +18,7 @@ const router = require('./router/router')
 // 设置模板引擎
 app.engine('html', ejs.__express)
 app.set('view engine', 'html')
-app.set('port', (process.env.PORT || 5000));
+app.set('port', (process.env.PORT || 80));
 // 静态文件中间件
 app.use(express.static('./public'))
 app.use('/avatar', express.static('./avatar'))
